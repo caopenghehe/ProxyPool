@@ -1,11 +1,11 @@
-from proxypool.schemas.proxy import Proxy
-from proxypool.crawlers.base import BaseCrawler
 import json
 
+from proxypool.crawlers.base import BaseCrawler
+from proxypool.schemas.proxy import Proxy
 
 BASE_URL = 'https://ip.jiangxianli.com/api/proxy_ips?page={page}'
 
-MAX_PAGE = 3
+MAX_PAGE = 6
 
 
 class JiangxianliCrawler(BaseCrawler):
@@ -24,7 +24,6 @@ class JiangxianliCrawler(BaseCrawler):
         result = json.loads(html)
         if result['code'] != 0:
             return
-        MAX_PAGE = int(result['data']['last_page'])
         hosts_ports = result['data']['data']
         for ip_address in hosts_ports:
             if(ip_address):

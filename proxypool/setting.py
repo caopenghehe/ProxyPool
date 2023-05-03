@@ -1,9 +1,9 @@
 import platform
+import shutil
 from os.path import dirname, abspath, join
+
 from environs import Env
 from loguru import logger
-import shutil
-
 
 env = Env()
 env.read_env()
@@ -34,23 +34,19 @@ APP_PROD_METHOD_MEINHELD = 'meinheld'
 APP_PROD_METHOD = env.str('APP_PROD_METHOD', APP_PROD_METHOD_GEVENT).lower()
 
 # redis host
-REDIS_HOST = env.str('PROXYPOOL_REDIS_HOST',
-                     env.str('REDIS_HOST', '127.0.0.1'))
+REDIS_HOST = env.str('PROXYPOOL_REDIS_HOST', env.str('REDIS_HOST', '127.0.0.1'))
 # redis port
 REDIS_PORT = env.int('PROXYPOOL_REDIS_PORT', env.int('REDIS_PORT', 6379))
 # redis password, if no password, set it to None
-REDIS_PASSWORD = env.str('PROXYPOOL_REDIS_PASSWORD',
-                         env.str('REDIS_PASSWORD', None))
+REDIS_PASSWORD = env.str('PROXYPOOL_REDIS_PASSWORD', env.str('REDIS_PASSWORD', None))
 # redis db, if no choice, set it to 0
 REDIS_DB = env.int('PROXYPOOL_REDIS_DB', env.int('REDIS_DB', 0))
 # redis connection string, like redis://[password]@host:port or rediss://[password]@host:port/0,
 # please refer to https://redis-py.readthedocs.io/en/stable/connections.html#redis.client.Redis.from_url
-REDIS_CONNECTION_STRING = env.str(
-    'PROXYPOOL_REDIS_CONNECTION_STRING', env.str('REDIS_CONNECTION_STRING', None))
+REDIS_CONNECTION_STRING = env.str('PROXYPOOL_REDIS_CONNECTION_STRING', env.str('REDIS_CONNECTION_STRING', None))
 
 # redis hash table key name
-REDIS_KEY = env.str('PROXYPOOL_REDIS_KEY', env.str(
-    'REDIS_KEY', 'proxies:universal'))
+REDIS_KEY = env.str('PROXYPOOL_REDIS_KEY', env.str('REDIS_KEY', 'proxies:universal'))
 
 # definition of proxy scores
 PROXY_SCORE_MAX = 100

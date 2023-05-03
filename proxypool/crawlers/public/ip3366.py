@@ -1,18 +1,20 @@
-from proxypool.crawlers.base import BaseCrawler
-from proxypool.schemas.proxy import Proxy
 import re
 
+from proxypool.crawlers.base import BaseCrawler
+from proxypool.schemas.proxy import Proxy
 
-MAX_PAGE = 3
+MAX_PAGE = 10
 BASE_URL = 'http://www.ip3366.net/free/?stype={stype}&page={page}'
+BASE_URL2 = 'https://proxy.ip3366.net/free/?action=china&page={page}'
 
 
 class IP3366Crawler(BaseCrawler):
     """
     ip3366 crawler, http://www.ip3366.net/
     """
-    urls = [BASE_URL.format(stype=stype,page=i) for stype in range(1,3) for i in range(1, 8)]
-    
+    urls = [(BASE_URL.format(stype=stype, page=i) for stype in range(1, 3) for i in range(1, MAX_PAGE + 1)),
+            (BASE_URL2.format(page=i) for i in range(1, MAX_PAGE + 1))]
+
     def parse(self, html):
         """
         parse html file to get proxies
@@ -22,8 +24,7 @@ class IP3366Crawler(BaseCrawler):
         # \s * 匹配空格，起到换行作用
         re_ip_address = ip_address.findall(html)
         for address, port in re_ip_address:
-            proxy = Proxy(host=address.strip(), port=int(port.strip()))
-            yield proxy
+            yield Proxy(host=address.strip(), port=int(port.strip()))
 
 
 if __name__ == '__main__':

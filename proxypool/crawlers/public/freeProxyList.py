@@ -1,25 +1,28 @@
-from pyquery import PyQuery as pq
+from pyquery import PyQuery
 
 from proxypool.crawlers.base import BaseCrawler
 from proxypool.schemas.proxy import Proxy
 
-BASE_URL = 'http://www.66ip.cn/{page}.html'
-MAX_PAGE = 10
+BASE_URL = 'https://free-proxy-list.net/'
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+}
 
 
-class Daili66Crawler(BaseCrawler):
+class FreeProxyList(BaseCrawler):
     """
-    daili66 crawler, http://www.66ip.cn/1.html
+    free-proxy-list crawler, https://free-proxy-list.net/
     """
-    urls = [BASE_URL.format(page=page) for page in range(1, MAX_PAGE + 1)]
-    
+    urls = [BASE_URL]
+
     def parse(self, html):
         """
         parse html file to get proxies
         :return:
         """
-        doc = pq(html)
-        trs = doc('.containerbox table tr:gt(0)').items()
+        doc = PyQuery(html)
+        trs = doc('table.table tbody tr:eq(0)').items()
         for tr in trs:
             host = tr.find('td:nth-child(1)').text()
             port = int(tr.find('td:nth-child(2)').text())
@@ -27,6 +30,6 @@ class Daili66Crawler(BaseCrawler):
 
 
 if __name__ == '__main__':
-    crawler = Daili66Crawler()
+    crawler = FreeProxyList()
     for proxy in crawler.crawl():
         print(proxy)
