@@ -1,7 +1,7 @@
 from flask import Flask, g
-from proxypool.storages.redis import RedisClient
-from proxypool.setting import API_HOST, API_PORT, API_THREADED, IS_DEV
 
+from proxypool.setting import API_HOST, API_PORT, API_THREADED, IS_DEV
+from proxypool.storages.redis import RedisClient
 
 __all__ = ['app']
 
@@ -26,7 +26,13 @@ def index():
     get home page, you can define your own templates
     :return:
     """
-    return '<h2>Welcome to Proxy Pool System</h2>'
+    conn = get_conn()
+
+    return '<h2>Welcome to Proxy Pool System</h2>' \
+           '<h2>当前代理ip数量 ' + str(conn.count()) + \
+           '</h2><h3><a href="/random">随机一个代理</a> </h3>' \
+           '<h3><a href="/all">显示全部代理</a> </h3>' \
+           '<h3><a href="/count">代理ip数量</a> </h3>'
 
 
 @app.route('/random')
