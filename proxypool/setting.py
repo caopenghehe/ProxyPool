@@ -34,7 +34,7 @@ APP_PROD_METHOD_MEINHELD = 'meinheld'
 APP_PROD_METHOD = env.str('APP_PROD_METHOD', APP_PROD_METHOD_GEVENT).lower()
 
 # redis host
-REDIS_HOST = env.str('PROXYPOOL_REDIS_HOST', env.str('REDIS_HOST', '127.0.0.1'))
+REDIS_HOST = env.str('PROXYPOOL_REDIS_HOST', env.str('REDIS_HOST', '192.168.3.216'))
 # redis port
 REDIS_PORT = env.int('PROXYPOOL_REDIS_PORT', env.int('REDIS_PORT', 6379))
 # redis password, if no password, set it to None
