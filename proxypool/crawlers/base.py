@@ -1,9 +1,11 @@
-from retrying import RetryError, retry
-import requests
-from loguru import logger
-from proxypool.setting import GET_TIMEOUT
-from fake_headers import Headers
 import time
+
+import requests
+from fake_headers import Headers
+from loguru import logger
+from retrying import RetryError, retry
+
+from proxypool.setting import GET_TIMEOUT
 
 
 class BaseCrawler(object):
@@ -16,6 +18,12 @@ class BaseCrawler(object):
             kwargs.setdefault('timeout', GET_TIMEOUT)
             kwargs.setdefault('verify', False)
             kwargs.setdefault('headers', headers)
+            proxy = requests.get("http://127.0.0.1:5555/random").text.strip()
+            proxies = {
+                "http": "http://" + proxy,
+                "https": "https://" + proxy,
+            }
+            kwargs.setdefault("proxies", proxies)
             response = requests.get(url, **kwargs)
             if response.status_code == 200:
                 response.encoding = 'utf-8'
