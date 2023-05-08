@@ -21,12 +21,6 @@ class ProxyListPlusCrawler(BaseCrawler):
 
     @retry(stop_max_attempt_number=3, retry_on_result=lambda x: x is None, wait_fixed=2000)
     def fetch(self, url, **kwargs):
-        proxy = requests.get("http://127.0.0.1:5555/random").text.strip()
-        proxies = {
-            "http": "http://" + proxy,
-            "https": "https://" + proxy,
-        }
-        kwargs.setdefault("proxies", proxies)
         headers = Headers(headers=True).generate()
         kwargs.setdefault('timeout', GET_TIMEOUT)
         kwargs.setdefault('verify', False)
